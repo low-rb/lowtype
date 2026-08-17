@@ -15,6 +15,13 @@ class MyClass
 end
 ```
 
+**✨ Features:**
+- Inline types
+- Enable/disable per environment
+- Integrates with [Sinatra](#sinatra) and [Raindeer](http://raindeer.dev) frameworks
+- Exports to RBS [UNRELEASED]
+- Uninstall easily: `lowtype uninstall`, that's it! [UNRELEASED]
+
 ## Default values
 
 Place `|` after the type definition to provide a default value when the argument is `nil`:
