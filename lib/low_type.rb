@@ -52,6 +52,14 @@ module LowType
 
       Low::Evaluator.evaluate(method_proxies: class_proxy.keyed_methods, class_binding: class_proxy.class_binding)
 
+      # class_binding's only job is evaluating default/type-expression values (e.g. the bare
+      # `String` in `def method(var: String)`) against the class's own lexical scope, right above --
+      # nothing reads it afterward. Clearing it here matters beyond just freeing a Binding: a
+      # Binding can never be made Ractor-shareable, even frozen (Ractor.make_shareable raises
+      # Ractor::Error unconditionally for one), so leaving a live Binding on class_proxy would
+      # permanently block sharing Lowkey's whole file/class/method-proxy registry across Ractors.
+      class_proxy.class_binding = nil
+
       klass.prepend Low::Redefiner.redefine(method_proxies: class_proxy.instance_methods, class_proxy:)
       klass.singleton_class.prepend Low::Redefiner.redefine(method_proxies: class_proxy.class_methods, class_proxy:)
 
