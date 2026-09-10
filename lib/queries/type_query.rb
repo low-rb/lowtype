@@ -19,13 +19,22 @@ module Low
       end
 
       def complex_type?(expression:)
-        Low::Types::COMPLEX_TYPES.include?(expression) || typed_array?(expression:) || typed_hash?(expression:)
+        Low::Types::COMPLEX_TYPES.include?(expression) ||
+          matchable_type?(expression:) ||
+          typed_array?(expression:) ||
+          typed_hash?(expression:)
       end
 
       private
 
       def basic_type?(expression:)
         expression.instance_of?(Class)
+      end
+
+      def matchable_type?(expression:)
+        expression.is_a?(Class) &&
+          expression.respond_to?(:match?) &&
+          expression.ancestors.include?(Low::Types::MatchableType)
       end
 
       def typed_hash?(expression:)
