@@ -88,8 +88,6 @@ module Low
             # You are now in the binding of the includer class.
             define_method(method_proxy.name) do |*args, **kwargs|
               # NOTE: Type checking is currently disabled. See 'config.type_checking'.
-              method_proxy = Lowkey[class_proxy.file_path][class_proxy.namespace][__method__]
-
               args, kwargs = Low::Redefiner.untyped_args(args:, kwargs:, method_proxy:)
               super(*args, **kwargs)
             end
