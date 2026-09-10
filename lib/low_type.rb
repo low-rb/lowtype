@@ -80,5 +80,15 @@ module LowType
     def configure
       yield(config)
     end
+
+    # Freezes the config, making it shareable across Ractors (Class/Module instance
+    # variables can only be read from a non-main Ractor if their value is frozen --
+    # otherwise every 'if LowType.config.type_checking' check in a typed/untyped
+    # method call raises Ractor::IsolationError). Call once, after all #configure
+    # calls, before spawning any worker Ractors -- #configure can no longer mutate
+    # the config afterwards, same as any other frozen object.
+    def freeze_config!
+      config.freeze
+    end
   end
 end
