@@ -3,6 +3,7 @@
 require 'lowkey'
 
 require_relative 'adapters/adapter_loader'
+require_relative 'definitions/ractor_safety'
 require_relative 'definitions/redefiner'
 require_relative 'definitions/type_accessors'
 require_relative 'expressions/expression_helpers'
@@ -41,6 +42,7 @@ module LowType
     klass.extend Low::ExpressionHelpers
     klass.extend Low::TypeAccessors
     klass.extend Low::Types
+    klass.extend Low::RactorSafety
 
     # Use TracePoint :end to capture the class binding after the class body finishes loading.
     # At :end time, trace.self is the including class and trace.binding is the class body's binding,
@@ -52,8 +54,9 @@ module LowType
 
       Low::Evaluator.evaluate(method_proxies: class_proxy.keyed_methods, class_binding: class_proxy.class_binding)
 
-      klass.prepend Low::Redefiner.redefine(method_proxies: class_proxy.instance_methods, class_proxy:)
-      klass.singleton_class.prepend Low::Redefiner.redefine(method_proxies: class_proxy.class_methods, class_proxy:)
+      ractor_safe = klass.ractor_safe?
+      klass.prepend Low::Redefiner.redefine(method_proxies: class_proxy.instance_methods, class_proxy:, ractor_safe:)
+      klass.singleton_class.prepend Low::Redefiner.redefine(method_proxies: class_proxy.class_methods, class_proxy:, ractor_safe:)
 
       Low::Adapter::Loader.load(klass:, class_proxy:)
 
