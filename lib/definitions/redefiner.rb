@@ -37,14 +37,16 @@ module Low
 
       def untyped_args(args:, kwargs:, method_proxy:) # rubocop:disable Metrics/AbcSize
         method_proxy.params_with_expressions.each do |param_proxy|
-          value = param_proxy.position ? args[param_proxy.position] : kwargs[param_proxy.name]
+          positional = %i[pos_req pos_opt].include?(param_proxy.type)
+
+          value = positional ? args[param_proxy.position] : kwargs[param_proxy.name]
 
           next unless value.nil?
           raise param_proxy.error_type, param_proxy.error_message(value:) if param_proxy.expression.required?
 
           value = param_proxy.expression.default_value # Default value can still be `nil`.
           value = value.value if value.is_a?(ValueExpression)
-          param_proxy.position ? args[param_proxy.position] = value : kwargs[param_proxy.name] = value
+          positional ? args[param_proxy.position] = value : kwargs[param_proxy.name] = value
         end
 
         [args, kwargs]

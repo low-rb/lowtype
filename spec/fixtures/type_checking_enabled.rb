@@ -8,4 +8,8 @@ class TypeCheckingEnabled
   def typed_arg(greeting = String)
     greeting
   end
+
+  def typed_kwarg(greeting: String)
+    greeting
+  end
 end
