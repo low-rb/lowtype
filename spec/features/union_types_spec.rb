@@ -23,12 +23,9 @@ RSpec.describe UnionTypes do
     end
 
     context 'when no arg is provided' do
-      let(:error_message) do
-        "Invalid argument type 'NilClass' for parameter 'greeting'. Valid types: 'String | Integer'"
-      end
-
       it 'raises an argument error' do
-        expect { union_types.multiple_typed_args }.to raise_error(Low::ArgumentTypeError, error_message)
+        # When shimmed the error message will be from LowType, when stripped standard Ruby.
+        expect { union_types.multiple_typed_args }.to raise_error(ArgumentError)
       end
     end
   end

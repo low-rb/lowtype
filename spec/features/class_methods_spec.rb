@@ -10,10 +10,9 @@ RSpec.describe ClassMethods do
     end
 
     context 'when no arg provided' do
-      let(:error_message) { "Invalid argument type 'NilClass' for parameter 'goodbye'. Valid types: 'String'" }
-
       it 'raises an argument error' do
-        expect { described_class.inline_class_typed_arg }.to raise_error(Low::ArgumentTypeError, error_message)
+        # When shimmed the error message will be from LowType, when stripped standard Ruby.
+        expect { described_class.inline_class_typed_arg }.to raise_error(ArgumentError)
       end
     end
   end
@@ -24,10 +23,9 @@ RSpec.describe ClassMethods do
     end
 
     context 'when no arg provided' do
-      let(:error_message) { "Invalid argument type 'NilClass' for parameter 'goodbye'. Valid types: 'String'" }
-
       it 'raises an argument error' do
-        expect { described_class.class_typed_arg }.to raise_error(Low::ArgumentTypeError, error_message)
+        # When shimmed the error message will be from LowType, when stripped standard Ruby.
+        expect { described_class.class_typed_arg }.to raise_error(ArgumentError)
       end
     end
 

@@ -29,11 +29,18 @@ RSpec.describe Basics do
       expect(basics.typed_arg('Hi')).to eq('Hi')
     end
 
-    context 'when no arg provided' do
+    context 'when no arg provided with type checking', type_checking: true do
       let(:error_message) { "Invalid argument type 'NilClass' for parameter 'greeting'. Valid types: 'String'" }
 
       it 'raises an argument error' do
         expect { basics.typed_arg }.to raise_error(Low::ArgumentTypeError, error_message)
+      end
+    end
+
+    context 'when no arg provided without type checking', type_checking: false do
+      it 'raises an argument error' do
+        # When shimmed the error message will be from LowType, when stripped standard Ruby.
+        expect { basics.typed_arg }.to raise_error(ArgumentError)
       end
     end
   end
@@ -43,7 +50,7 @@ RSpec.describe Basics do
       expect(basics.typed_arg_without_body('Hola')).to eq(nil)
     end
 
-    context 'when no arg provided' do
+    context 'when no arg provided', type_checking: true do
       let(:error_message) { "Invalid argument type 'NilClass' for parameter 'greeting'. Valid types: 'String'" }
 
       it 'raises an argument error' do
