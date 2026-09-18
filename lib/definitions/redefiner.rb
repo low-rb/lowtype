@@ -33,7 +33,7 @@ module Low
         when :shim
           shimmed_methods(method_proxies:, class_proxy:)
         when :strip
-          stripped_methods(method_proxies:, class_proxy:, klass:)
+          strip_types(method_proxies:, class_proxy:, klass:)
         end
       end
 
@@ -100,7 +100,7 @@ module Low
         end
       end
 
-      def stripped_methods(method_proxies:, class_proxy:, klass:)
+      def strip_types(method_proxies:, class_proxy:, klass:)
         method_proxies.values.filter(&:expressions?).each do |method_proxy|
           method_proxy.rewrite_signature
 

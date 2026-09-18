@@ -23,14 +23,10 @@ After checking out the repo, run `bin/setup` to install dependencies. Then, run 
 ### Testing
 
 ```bash
-rake spec:type_checking_true   # TYPE_CHECKING=true bundle exec rspec
-rake spec:type_checking_false  # TYPE_CHECKING=false bundle exec rspec
-rake spec:all                  # Both type checking true and false sequentially
+rake spec:shim  # TYPE_CHECKING=true DISABLE_MODE=shim bundle exec rspec
+rake spec:strip # TYPE_CHECKING=false DISABLE_MODE=strip bundle exec rspec
+rake spec:all   # Runs all configurations
 ```
-
-Specs are filtered per run using the `:type_checking` RSpec tag:
-- Untagged specs run in *both* processes
-- Tag `type_checking: true` or `type_checking: false` if it specifically needs it
 
 Plain `rake spec` / `bundle exec rspec` defaults to `type_checking: true`.
 
@@ -40,13 +36,13 @@ To release a new version, update the version number in `version.rb`, and then ru
 
 ## Execution paths
 
-LowType has two paths depending on `config.type_checking`:
+LowType has two paths depending when `config.type_checking = false`:
 
-**type_checking: true (default)**
+### config.disable_mode = :shim (default)
 
 Methods are redefined via a prepended Module using `define_method`. On each call, argument types are validated against the evaluated expressions, then `super` dispatches to the original method.
 
-**type_checking: false**
+### config.disable_mode = :strip
 
 Methods are rewritten directly on the class. `MethodProxy#rewrite_signature` strips type annotations from the signature line in the shared `lines` array, then `class_eval(method_proxy.export)` redefines the method with a plain Ruby signature. No prepended module, no `super`, no runtime overhead beyond the method itself.
 
@@ -58,17 +54,19 @@ Private visibility is preserved using `klass.send(:private, method_name)` after 
 
 Run the benchmark with:
 
-    $ bundle exec ruby benchmarks/rewriter_benchmark.rb
+```bash
+bundle exec ruby benchmarks/strip_benchmark.rb
+```
 
 Results on Ruby 3.3.0 (keyword args, which is the primary use case):
 
 | Approach                   | i/s       |
 | -------------------------- | --------- |
 | Plain Ruby                 | 6,200,000 |
-| rewrite_methods (new)      | 5,130,000 |
-| untyped_methods shim (old) | 1,100,000 |
+| strip_types                | 5,130,000 |
+| shimmed_methods shim       | 1,100,000 |
 
-The rewriter is 4.67x faster than the old shim and within 1.21x of plain Ruby.
+The Strip method is 4.67x faster than the old shim and within 1.21x of plain Ruby.
 
 ## Contributing
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Investigates why rewrite_methods is 1.21x slower than plain Ruby.
+# Investigates why strip_types is 1.21x slower than plain Ruby.
 # Tests four hypotheses:
 #   1. Object allocation (new instance per call)
 #   2. TracePoint still active during calls
@@ -8,7 +8,7 @@
 #   4. Method lookup after prepend chain
 
 require 'benchmark/ips'
-require_relative '../lib/low_type'
+require_relative '../lib/lowtype'
 
 LowType.configure { |c| c.type_checking = false }
 
@@ -19,7 +19,7 @@ class PlainBaseline
   end
 end
 
-# Rewritten via LowType rewrite_methods
+# Rewritten via LowType strip_types
 class RewrittenMethod
   include LowType
 
