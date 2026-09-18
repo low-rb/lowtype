@@ -9,19 +9,24 @@ Minor features that don't break backwards compatibility are released as patches.
 
 ### Added
 
-- Use Lowkey to export method definitions to RBS
-- Dynamically redefine includer class methods when `binding.pry` called to avoid `step`ing through this code
+- Export method signatures to RBS (via Lowkey)
+- Activate `:shim` mode when debugging with `binding.irb/pry` to avoid `step`ing through shim methods
+- Support dynamic expressions in methods and return types at runtime (like `type()` already does)
+- Complex types validation
+- `Boolean` type support
+- Error mode config
 
-## 1.4.0 [UNRELEASED]
+## 1.4.0
 
 ### Added
 
-- `rewrite_methods` replaces the `untyped_methods` shim when `config.type_checking = false`. Methods are rewritten directly via `class_eval` after stripping type annotations from the signature using `MethodProxy#rewrite_signature`. No more `define_method` + `super` dispatch overhead.
-- Benchmark: keyword arg methods are 4.67x faster than the old shim. Positional arg methods match plain Ruby performance.
-- Support dynamic expressions in methods and return types at runtime (like `type()` already does)
-- `Boolean` type support
-- Complex types validation
-- Error mode config
+- New disable mode: `:shim`. When `config.type_checking = false` and `config.disable_mode = :shim` then methods will be stripped of types on class load. Zero-overhead. Exporting to untyped files in a build step is also possible in future
+
+### Changed
+
+- Gem renamed from `low_type` to `lowtype`
+- Binding and namespace improvements. No longer need to use the full namespace
+- `ArgumentTypeError` now inherits from `ArgumentError`
 
 ## 1.3.1
 
