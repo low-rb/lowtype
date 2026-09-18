@@ -68,6 +68,7 @@ module LowType
 
   Config = Struct.new(
     :type_checking,
+    :disable_mode,
     :error_mode,
     :output_mode,
     :output_size,
@@ -77,7 +78,7 @@ module LowType
 
   class << self
     def config
-      @config ||= Config.new(true, :error, :type, 100, true, true)
+      @config ||= Config.new(true, :shim, :error, :type, 100, true, true)
     end
 
     def configure

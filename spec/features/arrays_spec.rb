@@ -12,7 +12,7 @@ RSpec.describe Arrays do
       expect(subject.typed_array_arg(%w[Hi Hey Howdy])).to eq(%w[Hi Hey Howdy])
     end
 
-    context 'when no arg provided' do
+    context 'when no arg provided', type_checking: true do
       let(:error_message) { "Invalid argument type 'NilClass' for parameter 'greetings'. Valid types: '[String]'" }
 
       it 'raises an argument error' do
@@ -20,7 +20,7 @@ RSpec.describe Arrays do
       end
     end
 
-    context 'when nil is the second element' do
+    context 'when nil is the second element', type_checking: true do
       let(:error_message) { "Invalid argument type 'Array' for parameter 'greetings'. Valid types: '[String]'" }
       let(:greetings) { ['Hi', nil, 'Howdy'] }
 
@@ -33,7 +33,7 @@ RSpec.describe Arrays do
         end
       end
 
-      context 'with deep type check', type_checking: true do
+      context 'with deep type check' do
         before { LowType.configure { |config| config.deep_type_check = true } }
         after { LowType.configure { |config| config.deep_type_check = false } }
 
@@ -49,7 +49,7 @@ RSpec.describe Arrays do
       expect(subject.typed_nilable_array_arg([nil, 'Farwell', 'See ya'])).to eq([nil, 'Farwell', 'See ya'])
     end
 
-    context 'when no arg provided' do
+    context 'when no arg provided', type_checking: true do
       let(:error_message) { "Invalid argument type 'NilClass' for parameter 'goodbyes'. Valid types: '[String | nil]'" }
 
       it 'raises an argument error' do
@@ -57,7 +57,7 @@ RSpec.describe Arrays do
       end
     end
 
-    context 'when nil is not the first element' do
+    context 'when nil is not the first element', type_checking: true do
       let(:error_message) { "Invalid argument type 'Array' for parameter 'goodbyes'. Valid types: '[String]'" }
       let(:goodbyes) { ['Farewell', nil, 'See ya'] }
 

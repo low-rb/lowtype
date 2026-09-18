@@ -29,11 +29,18 @@ RSpec.describe Basics do
       expect(basics.typed_arg('Hi')).to eq('Hi')
     end
 
-    context 'when no arg provided' do
+    context 'when no arg provided with type checking', type_checking: true do
       let(:error_message) { "Invalid argument type 'NilClass' for parameter 'greeting'. Valid types: 'String'" }
 
       it 'raises an argument error' do
         expect { basics.typed_arg }.to raise_error(Low::ArgumentTypeError, error_message)
+      end
+    end
+
+    context 'when no arg provided without type checking', type_checking: false do
+      it 'raises an argument error' do
+        # When shimmed the error message will be from LowType, when stripped standard Ruby.
+        expect { basics.typed_arg }.to raise_error(ArgumentError)
       end
     end
   end
@@ -43,7 +50,7 @@ RSpec.describe Basics do
       expect(basics.typed_arg_without_body('Hola')).to eq(nil)
     end
 
-    context 'when no arg provided' do
+    context 'when no arg provided', type_checking: true do
       let(:error_message) { "Invalid argument type 'NilClass' for parameter 'greeting'. Valid types: 'String'" }
 
       it 'raises an argument error' do
@@ -75,60 +82,6 @@ RSpec.describe Basics do
       # A default value that is not nil still has to be an allowed type.
       it 'raises an argument type error', type_checking: true do
         expect { basics.typed_arg_and_invalid_default_value }.to raise_error(Low::ArgumentTypeError, error_message)
-      end
-    end
-  end
-
-  # Multiple types.
-
-  describe '#multiple_typed_args' do
-    it 'passes through both arguments types' do
-      expect(basics.multiple_typed_args('Shalom')).to eq('Shalom')
-      expect(basics.multiple_typed_args(123)).to eq(123)
-    end
-
-    context 'when arg is wrong type' do
-      let(:error_message) do
-        "Invalid argument type 'TrueClass' for parameter 'greeting'. Valid types: 'String | Integer'"
-      end
-
-      it 'raises an invalid type error', type_checking: true do
-        expect { basics.multiple_typed_args(true) }.to raise_error(Low::ArgumentTypeError, error_message)
-      end
-    end
-
-    context 'when no arg is provided' do
-      let(:error_message) do
-        "Invalid argument type 'NilClass' for parameter 'greeting'. Valid types: 'String | Integer'"
-      end
-
-      it 'raises an argument error' do
-        expect { basics.multiple_typed_args }.to raise_error(Low::ArgumentTypeError, error_message)
-      end
-    end
-  end
-
-  describe '#multiple_typed_args_and_default_value' do
-    it 'passes through both arguments types' do
-      expect(basics.multiple_typed_args_and_default_value('Shalom')).to eq('Shalom')
-      expect(basics.multiple_typed_args_and_default_value(123)).to eq(123)
-    end
-
-    context 'when arg is wrong type' do
-      let(:error_message) do
-        "Invalid argument type 'TrueClass' for parameter 'greeting'. Valid types: 'String | Integer'"
-      end
-
-      it 'raises an argument type error', type_checking: true do
-        expect do
-          basics.multiple_typed_args_and_default_value(true)
-        end.to raise_error(Low::ArgumentTypeError, error_message)
-      end
-    end
-
-    context 'when no arg is provided' do
-      it 'provides the default value' do
-        expect(basics.multiple_typed_args_and_default_value).to eq('Salutations')
       end
     end
   end

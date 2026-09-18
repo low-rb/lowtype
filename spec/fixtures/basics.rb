@@ -25,20 +25,4 @@ class Basics
   def typed_arg_and_invalid_default_value(greeting = String | 123)
     greeting
   end
-
-  # Multiple types.
-
-  def multiple_typed_args(greeting = String | Integer)
-    greeting
-  end
-
-  def multiple_typed_args_and_default_value(greeting = String | Integer | 'Salutations')
-    greeting
-  end
-
-  private
-
-  def private_typed_arg(greeting = String)
-    greeting
-  end
 end

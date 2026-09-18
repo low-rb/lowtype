@@ -7,7 +7,12 @@ require_relative '../../lib/types/complex_types'
 include Low::Types # rubocop:disable Style/MixinUsage
 
 TYPE_CHECKING = ENV['TYPE_CHECKING'] != 'false'
-LowType.configure { |config| config.type_checking = TYPE_CHECKING }
+
+LowType.configure do |config|
+  config.type_checking = TYPE_CHECKING
+  config.disable_mode = :shim if ENV['DISABLE_MODE'] == 'shim'
+  config.disable_mode = :strip if ENV['DISABLE_MODE'] == 'strip'
+end
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

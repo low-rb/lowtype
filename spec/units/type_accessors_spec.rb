@@ -3,6 +3,7 @@
 require_relative '../../lib/types/error_types'
 require_relative '../fixtures/type_accessors'
 
+# TODO: Add tests for type_checking: false.
 RSpec.describe 'TypeAccessors' do
   describe '#type_reader' do
     subject { LowReader.new }
@@ -11,7 +12,7 @@ RSpec.describe 'TypeAccessors' do
       expect(subject.name).to eq('Cher')
     end
 
-    context 'when the value is set via another method' do
+    context 'when the value is set via another method', type_checking: true do
       before do
         subject.instance_variable_set(:@name, 123)
       end
@@ -30,7 +31,7 @@ RSpec.describe 'TypeAccessors' do
       expect(subject.instance_variable_get(:@name)).to eq('Tim')
     end
 
-    context 'when the setter receives an invalid type' do
+    context 'when the setter receives an invalid type', type_checking: true do
       it 'raises an argument type error' do
         expect { subject.name = 123 }.to raise_error(Low::ArgumentTypeError)
       end
@@ -49,13 +50,13 @@ RSpec.describe 'TypeAccessors' do
       expect(subject.name).to eq('Tim')
     end
 
-    context 'when the setter receives an invalid type' do
+    context 'when the setter receives an invalid type', type_checking: true do
       it 'raises an argument type error' do
         expect { subject.name = 123 }.to raise_error(Low::ArgumentTypeError)
       end
     end
 
-    context 'when the value is set via another method' do
+    context 'when the value is set via another method', type_checking: true do
       before do
         subject.instance_variable_set(:@name, 123)
       end
