@@ -1,0 +1,7 @@
+class Basics
+  def initialize: (::String greeting, ::String name) -> untyped
+  def typed_arg: (::String greeting) -> untyped
+  def typed_arg_without_body: (::String greeting) -> untyped
+  def typed_arg_and_default_value: (?::String greeting) -> untyped
+  def typed_arg_and_invalid_default_value: (?::String greeting) -> untyped
+end

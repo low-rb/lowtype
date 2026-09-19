@@ -1,0 +1,7 @@
+class DuckTypes
+  def initialize: (untyped greeting, untyped name) -> untyped
+  def arg: (untyped greeting) -> untyped
+  def arg_and_default_value: (?untyped greeting) -> untyped
+  def private_arg: (untyped greeting) -> untyped
+  def self.say_goodbye: (untyped goodbye) -> untyped
+end

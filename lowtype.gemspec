@@ -30,5 +30,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'expressions', '~> 0.1'
   spec.add_dependency 'lowkey', '~> 0.4'
+  spec.add_dependency 'lowload'
   spec.add_dependency 'trees'
 end

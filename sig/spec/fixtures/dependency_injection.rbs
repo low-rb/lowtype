@@ -1,0 +1,5 @@
+class DependencyInjection
+  def dependency: (?dependency: ::Low::Dependency) -> untyped
+  def symbol_dependency: (?dependency: ::Low::Dependency) -> untyped
+  def string_dependency: (?dependency: ::Low::Dependency) -> untyped
+end
