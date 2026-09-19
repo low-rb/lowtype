@@ -2,9 +2,11 @@
 
 source 'https://rubygems.org'
 
-gem 'falcon'
-gem 'lowtype', path: '../../'
-gem 'puma'
-gem 'rackup'
-gem 'sinatra'
-gem 'webrick'
+group :development do
+  gem 'falcon'
+  gem 'lowtype', path: '../../'
+  gem 'puma'
+  gem 'rackup'
+  gem 'sinatra'
+  gem 'webrick'
+end
