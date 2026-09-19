@@ -8,7 +8,9 @@ gemspec
 group :development do
   gem 'expressions', path: '../expressions'
   gem 'lowkey', path: '../lowkey'
+  gem 'lowload', path: '../lowload'
   gem 'providers', path: '../providers'
+  gem 'trees', path: '../trees'
 
   gem 'benchmark-ips'
   gem 'irb'

@@ -1,0 +1,16 @@
+class TypeHelper
+  def default_string: () -> untyped
+  def default_method: () -> untyped
+  def default_string_again: () -> untyped
+  def default_typed_value: () -> untyped
+  def subtype_array: () -> untyped
+  def invalid_subtype_array: () -> untyped
+  def array_multiple_subtypes: () -> untyped
+  def invalid_array_multiple_subtypes: () -> untyped
+  def fetch_method: () -> untyped
+  def nil_method: () -> untyped
+end
+
+class TypeHelperWithoutRefinements
+  def subtype_array: () -> untyped
+end

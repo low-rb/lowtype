@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/lowtype'
+require_relative '../lib/cli/cli'
+
+begin
+  LowType::CLI.run(ARGV)
+rescue LowType::CLI::RBS::MissingPathError, LoadError => e
+  warn "lowtype: #{e.message}"
+  exit 1
+end

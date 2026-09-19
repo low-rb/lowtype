@@ -1,0 +1,6 @@
+class ClassMethods
+  def private_typed_arg: (::String greeting) -> untyped
+  def self.inline_class_typed_arg: (::String goodbye) -> untyped
+  def self.class_typed_arg: (::String goodbye) -> untyped
+  def self.class_typed_arg_and_default_value: (?::String goodbye) -> untyped
+end

@@ -1,0 +1,11 @@
+class Kennel
+  def admit: (?pet: untyped) -> untyped
+end
+
+class NumericStore
+  def save: (?value: untyped) -> untyped
+end
+
+class IOReader
+  def read: (source: ::IO) -> untyped
+end

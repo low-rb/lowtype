@@ -1,0 +1,4 @@
+class ValueExpressions
+  def typed_arg_and_typed_default_value: (?::String greeting) -> untyped
+  def typed_arg_and_invalid_default_typed_value: (?::String | Array[::Symbol] greeting) -> untyped
+end
