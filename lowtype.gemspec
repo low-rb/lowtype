@@ -26,9 +26,9 @@ Gem::Specification.new do |spec|
   end
 
   spec.require_paths = ['lib']
-  spec.bindir = 'exe'
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
 
   spec.add_dependency 'expressions', '~> 0.1'
   spec.add_dependency 'lowkey', '~> 0.4'
+  spec.add_dependency 'trees'
 end
