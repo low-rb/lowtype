@@ -10,4 +10,22 @@ RSpec.describe Low::TypeExpression do
       expect { type_expression }.not_to raise_error
     end
   end
+
+  describe 'HIDDEN_PATHS' do
+    it 'hides adapters' do
+      adapters = Dir[File.expand_path('../../lib/adapters/*.rb', __dir__)]
+
+      expect(adapters).not_to be_empty
+      expect(Low::HIDDEN_PATHS).to include(*adapters)
+    end
+
+    it 'hides modules' do
+      modules = %w[expressions/expression_helpers definitions/type_accessors definitions/redefiner]
+      expect(Low::HIDDEN_PATHS).to include(*modules.map { |path| File.expand_path("../../lib/#{path}.rb", __dir__) })
+    end
+
+    it 'only hides files that exist' do
+      expect(Low::HIDDEN_PATHS).to all(satisfy { |path| File.file?(path) })
+    end
+  end
 end
