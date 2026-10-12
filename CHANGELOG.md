@@ -5,16 +5,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Minor features that don't break backwards compatibility are released as patches.
 
-## 1.5.0 [UNRELEASED]
+## 1.6.0
 
 ### Added
 
-- Export method signatures to RBS (via Lowkey)
 - Activate `:shim` mode when debugging with `binding.irb/pry` to avoid `step`ing through shim methods
 - Support dynamic expressions in methods and return types at runtime (like `type()` already does)
 - Complex types validation
 - `Boolean` type support
 - Error mode config
+
+## 1.5.0
+
+### Added
+
+- RBS export via `lowtype rbs` CLI command
 
 ## 1.4.0
 
