@@ -7,9 +7,9 @@ require_relative '../proxies/param_proxy'
 require_relative '../queries/type_query'
 
 module Low
-  root_path = File.expand_path(__dir__)
-  adapter_paths = Dir.chdir(root_path) { Dir.glob('adapters/*') }.map { |path| File.join(root_path, path) }
   module_paths = %w[expressions/expressions instance_types redefiner].map { |path| File.join(root_path, "#{path}.rb") }
+  lib_path = File.expand_path('..', __dir__)
+  adapter_paths = Dir.glob('adapters/*', base: lib_path).map { |path| File.join(lib_path, path) }
 
   HIDDEN_PATHS = [File.expand_path(__FILE__), *adapter_paths, *module_paths].freeze
 
