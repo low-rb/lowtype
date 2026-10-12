@@ -49,7 +49,11 @@ puts "TracePoint :call events for rewritten#greet after 10 calls: #{tp_count}"
 tp_count = 0
 10.times { plain.greet(name: 'test') }
 puts "TracePoint :call events for plain#greet after 10 calls: #{tp_count}"
-TracePoint.trace(:call).disable rescue nil
+begin
+  TracePoint.trace(:call).disable
+rescue StandardError
+  nil
+end
 
 puts "\n== Hypothesis 2: Prepend chain depth =="
 puts "RewrittenMethod ancestors: #{RewrittenMethod.ancestors.first(5).inspect}"

@@ -4,7 +4,6 @@ module LowType
   module TypeStripper
     module_function
 
-    def export(src:, dest:)
-    end
+    def export(src:, dest:); end
   end
 end

@@ -16,7 +16,7 @@ module LowType
       module Exporter
         class << self
           def export(path:, boot: nil)
-            dirload(path).loaded_paths.each do |file_path, adapter|
+            dirload(path).loaded_paths.each do |file_path, _adapter|
               next unless file_path.end_with?('.rb') || file_path.end_with?('.rbx')
 
               export_file(file_path:)

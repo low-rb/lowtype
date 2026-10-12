@@ -6,9 +6,9 @@ source 'https://gem.coop'
 gemspec
 
 group :development do
+  gem 'dirload', path: '../dirload'
   gem 'expressions', path: '../expressions'
   gem 'lowkey', path: '../lowkey'
-  gem 'dirload', path: '../dirload'
   gem 'providers', path: '../providers'
   gem 'trees', path: '../trees'
 
