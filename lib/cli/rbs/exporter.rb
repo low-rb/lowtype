@@ -2,7 +2,7 @@
 
 require 'fileutils'
 require 'lowkey'
-require 'lowload'
+require 'dirload'
 
 require_relative 'class_sig'
 
@@ -12,11 +12,11 @@ module LowType
       class MissingPathError < StandardError; end
 
       # Exports .rbs files for every class in `path` (a file or directory) that includes LowType.
-      # Uses LowLoad to autoload missing constants from files within the same directory.
+      # Uses dirload() to autoload missing constants from files within the same directory.
       module Exporter
         class << self
           def export(path:, boot: nil)
-            LowLoad.dirload(path).loaded_paths.each do |file_path, adapter|
+            dirload(path).loaded_paths.each do |file_path, adapter|
               next unless file_path.end_with?('.rb') || file_path.end_with?('.rbx')
 
               export_file(file_path:)
