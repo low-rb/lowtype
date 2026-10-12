@@ -12,7 +12,7 @@ PATH
 PATH
   remote: ../lowkey
   specs:
-    lowkey (0.4.3)
+    lowkey (0.5.0)
       prism
 
 PATH
@@ -29,10 +29,10 @@ PATH
 PATH
   remote: .
   specs:
-    lowtype (1.5.0)
+    lowtype (1.5.1)
       dirload
       expressions (~> 0.1)
-      lowkey (~> 0.4)
+      lowkey (~> 0.5)
       trees
 
 GEM
@@ -163,8 +163,8 @@ CHECKSUMS
   language_server-protocol (3.17.0.6) sha256=5ef2c0c138f8267e1bc631d3328347d354f96724b0af22f2c79516120443b7f0
   lint_roller (1.1.0) sha256=2c0c845b632a7d172cb849cc90c1bce937a28c5c8ccccb50dfd46a485003cc87
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
-  lowkey (0.4.3)
-  lowtype (1.5.0)
+  lowkey (0.5.0)
+  lowtype (1.5.1)
   mustermann (3.1.1) sha256=4c6170c7234d5499c345562ba7c7dfe73e1754286dcc1abb053064d66a127198
   parallel (2.3.0) sha256=f75a3e904101ce6a1ccb6b8dc800cbafd42166d83330192438dcf29395167a6f
   parser (3.3.12.0) sha256=21a6d7f755d5a24dfbdc6e6b772e4e879a52e7631a88bc5a3a134606052c9828
