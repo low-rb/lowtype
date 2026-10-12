@@ -19,8 +19,8 @@ end
 - Inline types
 - Enable/disable per environment
 - Integrates with [Sinatra](#sinatra) and [Raindeer](http://raindeer.dev) frameworks
-- Exports to RBS [UNRELEASED]
-- Uninstall easily: `lowtype uninstall`, that's it! [UNRELEASED]
+- Exports to RBS: `lowtype rbs :src`
+- Uninstall easily: `lowtype strip!`, that's it! [UNRELEASED]
 
 ## Default values
 
