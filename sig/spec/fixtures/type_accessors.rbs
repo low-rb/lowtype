@@ -1,0 +1,11 @@
+class LowReader
+  def initialize: () -> untyped
+end
+
+class LowWriter
+  def initialize: () -> untyped
+end
+
+class LowAccessor
+  def initialize: () -> untyped
+end

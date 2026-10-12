@@ -1,0 +1,13 @@
+class Hashes
+  def initialize: (?hash: untyped) -> untyped
+  def typed_hash_arg: (?untyped greetings) -> untyped
+  def typed_hash_kwarg: (?greetings: untyped) -> untyped
+  def typed_hash_arg_and_default_value: (?untyped greetings) -> untyped
+  def typed_hash_kwarg_and_default_value: (?greetings: untyped) -> untyped
+  def typed_hash_arg_and_hash_empty_value: (?untyped greetings) -> untyped
+  def typed_hash_arg_and_key_value_hash_empty_value: (?untyped greetings) -> untyped
+end
+
+class HashWithTypeAccessor
+  def initialize: (value: untyped) -> untyped
+end

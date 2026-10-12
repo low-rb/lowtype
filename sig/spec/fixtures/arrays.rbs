@@ -1,0 +1,7 @@
+class Arrays
+  def typed_array_arg: (Array[::String] greetings) -> untyped
+  def typed_nilable_array_arg: (Array[::String?] goodbyes) -> untyped
+  def typed_nilable_array_arg_and_default_nil: (?Array[::String?]? greetings) -> untyped
+  def typed_array_arg_and_default_nil: (?Array[::String]? greetings) -> untyped
+  def typed_array_arg_and_default_value: (?Array[::String] greetings) -> untyped
+end

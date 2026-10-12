@@ -1,0 +1,6 @@
+class ReturnTypes
+  def return_type: () -> ::Integer
+  def array_return_type: () -> Array[::Symbol]
+  def arg_and_return_type: (untyped greeting) -> ::String
+  def arg_and_nilable_return_value: (untyped greeting) -> ::String?
+end

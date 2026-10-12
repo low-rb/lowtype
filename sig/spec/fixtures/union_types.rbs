@@ -1,0 +1,4 @@
+class UnionTypes
+  def multiple_typed_args: (::String | ::Integer greeting) -> untyped
+  def multiple_typed_args_and_default_value: (?::String | ::Integer greeting) -> untyped
+end

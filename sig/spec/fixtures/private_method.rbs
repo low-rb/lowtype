@@ -1,0 +1,3 @@
+class PrivateMethod
+  def private_typed_arg: (::String greeting) -> untyped
+end
