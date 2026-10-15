@@ -35,7 +35,7 @@ RSpec.describe Arrays do
 
       context 'with deep type check' do
         before { LowType.configure { |config| config.deep_type_check = true } }
-        after { LowType.configure { |config| config.deep_type_check = false } }
+        after { LowType.configure { |config| config.deep_type_check = true } }
 
         it 'raises an argument error' do
           expect { subject.typed_array_arg(greetings) }.to raise_error(Low::ArgumentTypeError, error_message)
@@ -69,7 +69,7 @@ RSpec.describe Arrays do
 
       context 'with deep type check' do
         before { LowType.configure { |config| config.deep_type_check = true } }
-        after { LowType.configure { |config| config.deep_type_check = false } }
+        after { LowType.configure { |config| config.deep_type_check = true } }
 
         it 'passes through the argument' do
           expect(subject.typed_nilable_array_arg(goodbyes)).to eq(goodbyes)
