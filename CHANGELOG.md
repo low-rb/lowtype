@@ -5,21 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 Minor features that don't break backwards compatibility are released as patches.
 
-## 1.7.0 [UNRELEASED]
-
-### Added
-
-- Activate `:shim` mode when debugging with `binding.irb/pry` to avoid `step`ing through shim methods
-- Support dynamic expressions in methods and return types at runtime (like `type()` already does)
-- Complex types validation
-- Error mode config
-
 ## 1.6.0
 
 ### Added
 
 - `Boolean` type support
-- `Enum[*values]` type support with class load validation of default values
+- `Enum[*values]` support with class load validation of default values
+- `lowtype strip!` CLI command to remove types from files
+- LowType keeps working when `Lowkey.clear` is called after an app has loaded, as it holds the proxies it needs
+- `lowtype strip :src :dest` CLI command to export files with types removed
+
+### Fixed
+
+- Sinatra apps each validate their own routes rather than sharing the last loaded app's file path
+- `type_reader`/`type_accessor` return the default value when the instance variable is `nil`
+- `type_accessor` errors point to the type accessor rather than LowType
+- `:strip` disable mode with multi-line signatures, return types, endless methods, splats, blocks and `def self.` methods
 
 ## 1.5.0
 

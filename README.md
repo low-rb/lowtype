@@ -20,7 +20,7 @@ end
 - Enable/disable per environment
 - Integrates with [Sinatra](#sinatra) and [Raindeer](http://raindeer.dev) frameworks
 - Exports to RBS: `lowtype rbs :src`
-- Uninstall easily: `lowtype strip!`, that's it! [UNRELEASED]
+- [Uninstall](#uninstall) easily: `lowtype strip!`, that's it!
 
 ## Default values
 
@@ -360,6 +360,35 @@ Add `gem 'lowtype'` to your Gemfile then:
 ```
 bundle install
 ```
+
+## Uninstall
+
+Remove LowType from every file in the current directory, leaving plain Ruby behind:
+
+```console
+lowtype strip!
+```
+
+Or export a copy of your source to a new directory with LowType removed (handy as a build step):
+
+```console
+lowtype strip app build/app
+```
+
+```ruby
+# Before:
+def greet(greeting = String, name = String | 'World') -> { String }
+
+# After:
+def greet(greeting, name = 'World')
+```
+
+**Results:**
+- `type String | 'Hello'` local types become `'Hello'`
+- `include LowType`, `using LowType::Syntax` and `require 'lowtype'` lines are removed
+- Files are loaded so that LowType can tell types from default values. Files that can't load on their own are skipped with a warning. In the future this can be avoided with [slim syntax]().
+- Dependency expressions like `Dependency | :key` become `Providers[:key]` default values
+- `type_reader`/`type_writer`/`type_accessor` become `attr_reader`/`attr_writer`/`attr_accessor`, unless they have a default value which keeps LowType
 
 ## Advanced Techniques
 
