@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require_relative '../expressions/type_expression'
+require_relative '../types/type_definition'
 
 module Low
   # TODO: Unit test.
   class TypeQuery
     class << self
       def type?(expression)
-        basic_type?(expression:) || complex_type?(expression:)
+        basic_type?(expression:) || complex_type?(expression:) || typed_array?(expression:) || typed_hash?(expression:)
       end
 
       def typed_array?(expression:)
@@ -15,11 +16,17 @@ module Low
       end
 
       def value?(value)
-        !basic_type?(expression: value) && !complex_type?(expression: value)
+        !type?(value)
       end
 
+      # Complex types and type definitions respond to "match?(value:)".
       def complex_type?(expression:)
-        Low::Types::COMPLEX_TYPES.include?(expression) || typed_array?(expression:) || typed_hash?(expression:)
+        Low::Types::COMPLEX_TYPES.include?(expression) || typed_definition?(expression:)
+      end
+
+      # A parameterized type such as "Status[200]" or "Enum[:a, :b]".
+      def typed_definition?(expression:)
+        expression.is_a?(Low::TypeDefinition)
       end
 
       private

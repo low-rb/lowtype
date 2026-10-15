@@ -66,6 +66,7 @@ module Low
               new.class_evaluate(proxy: param_proxy, class_binding:)
             end
             param_proxy.expression = cast_type_expression(expression:, param_proxy:)
+            validate_default!(param_proxy:)
           end
         rescue NameError => e
           mp = method_proxy
@@ -98,6 +99,20 @@ module Low
         end
 
         nil
+      end
+
+      # Fail early on class load rather than on method call.
+      def validate_default!(param_proxy:)
+        expression = param_proxy.expression
+        return unless expression.is_a?(TypeExpression) && !expression.required?
+
+        # When an enum's default value isn't an allowed value.
+        if expression.types.any? { |type| type.is_a?(Types::Enum::Definition) }
+          expression.validate!(value: expression.default_value, proxy: param_proxy)
+        end
+      rescue ArgumentError
+        raise AllowedTypeError, "Invalid default value #{expression.display_default} for parameter '#{param_proxy.name}' " \
+                                "at #{param_proxy.file_path}:#{param_proxy.start_line}. Valid types: '#{expression.valid_types}'"
       end
     end
   end

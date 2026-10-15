@@ -1,0 +1,7 @@
+class Booleans
+  def typed_arg: (bool flag) -> untyped
+  def typed_arg_and_default_value: (?flag: bool) -> untyped
+  def typed_arg_and_nil: (?flag: bool?) -> untyped
+  def typed_array: (Array[bool] flags) -> untyped
+  def typed_return: (untyped flag) -> bool
+end

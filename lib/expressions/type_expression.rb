@@ -55,12 +55,19 @@ module Low
         if type.is_a?(Array)
           "[#{type.map { |subtype| valid_subtype(subtype:) }.join(', ')}]"
         else
-          type.inspect.to_s.delete_prefix('Low::Types::')
+          display_name(type:)
         end
       end
 
       types << 'nil' if @default_value.nil?
       types.join(' | ')
+    end
+
+    def display_default
+      display_default = default_value
+      display_default = default_value.value if default_value.is_a?(ValueExpression)
+
+      display_default.inspect.to_s
     end
 
     private
@@ -85,12 +92,18 @@ module Low
 
     def valid_subtype(subtype:)
       if subtype.is_a?(TypeExpression)
-        types = subtype.types
+        types = subtype.types.map { |type| display_name(type:) }
         types << 'nil' if subtype.default_value.nil?
         types.join(' | ')
       else
-        subtype.to_s.delete_prefix('Low::Types::')
+        display_name(type: subtype)
       end
+    end
+
+    def display_name(type:)
+      return type.display_name if type.respond_to?(:display_name)
+
+      type.inspect.to_s.delete_prefix('Low::Types::')
     end
 
     def array_types_match_values?(types:, values:, proxy:)
@@ -136,8 +149,9 @@ module Low
     end
 
     def type_matches_value?(type:, value:, proxy:)
-      if type.instance_of?(Class)
-        return type.match?(value:) if Low::TypeQuery.complex_type?(expression: type)
+      if Low::TypeQuery.complex_type?(expression: type)
+        return type.match?(value:)
+      elsif type.instance_of?(Class)
         return value.value <= type if value.instance_of?(ValueExpression)
 
         return value.is_a?(type)

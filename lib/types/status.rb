@@ -2,6 +2,7 @@
 
 require_relative 'complex_type'
 require_relative 'error_types'
+require_relative 'type_definition'
 
 module Low
   module Types
@@ -15,6 +16,8 @@ module Low
       end
 
       class StatusCode
+        include TypeDefinition
+
         attr_reader :status_code
 
         STATUS_CODES = [
@@ -35,6 +38,14 @@ module Low
           raise AllowedTypeError unless STATUS_CODES.include?(status_code)
 
           @status_code = status_code
+        end
+
+        def match?(value:)
+          value == @status_code
+        end
+
+        def display_name
+          "Status[#{@status_code}]"
         end
 
         def ==(other)

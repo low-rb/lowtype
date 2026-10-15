@@ -1,0 +1,9 @@
+class Enums
+  def typed_arg: (("red" | "orange" | "yellow") color) -> untyped
+  def typed_arg_and_default_value: (?state: (:draft | :published)) -> untyped
+  def mixed_values: ((:ok | "not found" | 404) code) -> untyped
+  def enum_and_type: (?code: :ok | ::Integer) -> untyped
+  def typed_arg_and_nil: (?state: (:draft | :published)?) -> untyped
+  def typed_array: (Array[(:draft | :published)] states) -> untyped
+  def typed_return: (untyped state) -> (:draft | :published)
+end

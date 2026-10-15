@@ -265,8 +265,8 @@ end
 
 ### Complex types
 
-- `Boolean` - Accepts `true`/`false`) [UNRELEASED]
-- `Enum` - Usage: `Enum[1, 2, 3]` [[CONCEPT STAGE](https://github.com/low-rb/lowtype/issues/6)]
+- `Boolean` - Accepts only `true`/`false`
+- `Enum` - An allowed set of values. Usage: `Enum[:draft, :published] | :draft`
 - `Tuple` (subclass of `Array`)
 - `Status` (subclass of `Integer`)
 - `Headers` (subclass of `Hash`)

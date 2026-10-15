@@ -23,6 +23,8 @@ module LowType
             return COMPLEX_TYPE_MAP[type] if COMPLEX_TYPE_MAP.key?(type)
 
             case type
+            when ::Low::Types::Enum::Definition then map_enum(type)
+            when ::Low::Types::Status::StatusCode then 'Integer'
             when ::Low::TypeExpression then map_expression(type)
             when Array then map_array(type)
             when Hash then map_hash(type)
@@ -45,6 +47,17 @@ module LowType
             return "[#{type.map { |subtype| map(subtype) }.join(', ')}]" if type.length > 1
 
             "Array[#{map(type.first)}]"
+          end
+
+          def map_enum(type)
+            literals = type.values.map do |value|
+              case value
+              when Symbol, String, Integer, true, false, nil then value.inspect
+              else return 'untyped'
+              end
+            end
+
+            literals.length > 1 ? "(#{literals.join(' | ')})" : literals.first
           end
 
           def map_hash(type)
