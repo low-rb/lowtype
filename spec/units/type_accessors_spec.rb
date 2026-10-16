@@ -23,6 +23,30 @@ RSpec.describe 'TypeAccessors' do
     end
   end
 
+  describe 'default values' do
+    subject { LowDefaults.new }
+
+    it 'returns the default value when the value is nil' do
+      expect(subject.name).to eq('Cher')
+    end
+
+    it 'returns the value when the value is set' do
+      subject.instance_variable_set(:@name, 'Tim')
+      expect(subject.name).to eq('Tim')
+    end
+
+    it 'returns nil when the default value is nil' do
+      expect(subject.nickname).to be_nil
+    end
+
+    it 'does not share a mutable default value' do
+      subject.tags << 'singer'
+
+      expect(subject.tags).to eq([])
+      expect(LowDefaults.new.tags).to eq([])
+    end
+  end
+
   describe '#type_writer' do
     subject { LowWriter.new }
 
@@ -63,6 +87,12 @@ RSpec.describe 'TypeAccessors' do
 
       it 'raises a return type error' do
         expect { subject.name }.to raise_error(Low::ReturnTypeError)
+      end
+
+      it 'points the error to the type accessor' do
+        expect { subject.name }.to raise_error do |error|
+          expect(error.backtrace.first).to start_with("#{File.expand_path('../fixtures/type_accessors.rb', __dir__)}:28")
+        end
       end
     end
   end

@@ -22,8 +22,8 @@ module LowType
     end
 
     line('strip!') do
-      s { 'Strips files from the current directory of their types' }
-      e { 'lowtype strip' }
+      s { 'Strips types from files in the current directory' }
+      e { 'lowtype strip!' }
       x { TypeStripper.export(src: '.', dest: '.') }
     end
 

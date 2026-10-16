@@ -32,10 +32,11 @@ require_relative 'types/complex_types'
 #      │              │                 │                 │               │
 module LowType
   # Defers evaluation and redefinition until after the class body finishes loading via TracePoint :end.
-  def self.included(klass)
-    file_path = Low::FileQuery.file_path(klass:)
-    file_proxy = Lowkey.load(file_path)
-    class_proxy = file_proxy[klass.name]
+  def self.included(klass) # rubocop:disable Metrics/AbcSize
+    class_proxy = Lowkey[Low::FileQuery.file_path(klass:)][klass.name]
+
+    # Type accessors evaluate union types in the class body, before the class is evaluated.
+    require_relative 'syntax/union_types' if LowType.config.union_type_expressions
 
     klass.include Low::ExpressionHelpers
     klass.extend Low::ExpressionHelpers
@@ -45,7 +46,7 @@ module LowType
     # Use TracePoint :end to capture the class binding after the class body finishes loading.
     # At :end time, trace.self is the including class and trace.binding is the class body's binding,
     # stored on class_proxy.class_binding for use by LowType and other consumers.
-    tp = TracePoint.new(:end) do |trace|
+    trace_point = TracePoint.new(:end) do |trace|
       next unless trace.self == klass
 
       class_proxy.class_binding = trace.binding
@@ -60,10 +61,10 @@ module LowType
 
       Low::Adapter::Loader.load(klass:, class_proxy:)
 
-      tp.disable
+      trace_point.disable
     end
 
-    tp.enable
+    trace_point.enable
   end
 
   Config = Struct.new(

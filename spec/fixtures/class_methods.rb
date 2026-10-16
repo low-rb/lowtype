@@ -9,6 +9,10 @@ class ClassMethods
     goodbye
   end
 
+  def ClassMethods.named_class_typed_arg(goodbye = String) # rubocop:disable Style/ClassMethods
+    goodbye
+  end
+
   class << self
     def class_typed_arg(goodbye = String)
       goodbye

@@ -14,6 +14,10 @@ LowType.configure do |config|
   config.disable_mode = :strip if ENV['DISABLE_MODE'] == 'strip'
 end
 
+# TypeStripper specs read method calls from fixtures that other specs have already loaded, so keep their nodes.
+# Runs with type checking disabled keep releasing nodes, so that ":shim" and ":strip" modes are tested without them.
+Lowkey.configure { |config| config.release_nodes = false } if TYPE_CHECKING
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'

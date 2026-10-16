@@ -66,6 +66,8 @@ module Low
               new.class_evaluate(proxy: param_proxy, class_binding:)
             end
             param_proxy.expression = cast_type_expression(expression:, param_proxy:)
+
+            polyfill_default(param_proxy:)
             validate_default!(param_proxy:)
           end
         rescue NameError => e
@@ -99,6 +101,16 @@ module Low
         end
 
         nil
+      end
+
+      def polyfill_default(param_proxy:)
+        expression = param_proxy.expression
+
+        case expression.class.name
+        when 'Low::Dependency'
+          # Remap dependency expression to providers hash lookup method.
+          param_proxy.default = "Providers[#{expression.provider_key.inspect}]"
+        end
       end
 
       # Fail early on class load rather than on method call.

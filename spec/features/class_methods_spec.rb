@@ -19,6 +19,24 @@ RSpec.describe ClassMethods do
     end
   end
 
+  describe '.named_class_typed_arg' do
+    it 'passes through the argument' do
+      expect(class_methods.named_class_typed_arg('Hi')).to eq('Hi')
+    end
+
+    context 'when no arg provided' do
+      it 'raises an argument error' do
+        expect { class_methods.named_class_typed_arg }.to raise_error(ArgumentError)
+      end
+    end
+
+    context 'when arg is the wrong type', type_checking: true do
+      it 'raises an argument type error' do
+        expect { class_methods.named_class_typed_arg(1) }.to raise_error(Low::ArgumentTypeError)
+      end
+    end
+  end
+
   describe '.class_typed_arg' do
     it 'passes through the argument' do
       expect(class_methods.class_typed_arg('Hi')).to eq('Hi')

@@ -104,7 +104,10 @@ module Low
         method_proxies.values.filter(&:expressions?).each do |method_proxy|
           method_proxy.rewrite_signature
 
-          klass.class_eval(method_proxy.export, method_proxy.file_path, method_proxy.start_line)
+          # Class methods are evaluated on the singleton class but "def self.method" would define a method on the
+          # singleton class's own singleton class. So methods with a receiver are evaluated in the class instead.
+          target = klass.singleton_class? && method_proxy.receiver? ? klass.attached_object : klass
+          target.class_eval(method_proxy.export, method_proxy.file_path, method_proxy.start_line)
 
           if class_proxy.private_start_line && method_proxy.start_line > class_proxy.private_start_line
             klass.send(:private, method_proxy.name)

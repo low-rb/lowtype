@@ -31,3 +31,11 @@ class LowAccessor
     @name = 'Cher'
   end
 end
+
+class LowDefaults
+  include LowType
+  using LowType::Syntax
+
+  type_reader name: String | 'Cher'
+  type_accessor tags: Array[String] | [], nickname: String | nil
+end
