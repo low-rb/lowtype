@@ -11,7 +11,7 @@ module Low
 
           return unless ancestors.include?('Sinatra::Base')
 
-          klass.prepend SinatraAdapter.new.module(file_path: class_proxy.file_path)
+          klass.prepend SinatraAdapter.new.module(class_proxy:)
         end
       end
     end
