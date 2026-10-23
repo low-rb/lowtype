@@ -11,6 +11,20 @@ RSpec.describe Low::TypeExpression do
     end
   end
 
+  describe '#|' do
+    let(:id) { described_class.new(type: Integer) | String }
+
+    it 'leaves the receiver unchanged' do
+      id | Symbol | nil
+      expect([id.types, id.required?]).to eq([[Integer, String], true])
+    end
+
+    it 'returns a copy with the union' do
+      optional = id | Symbol | nil
+      expect([optional.types, optional.required?]).to eq([[Integer, String, Symbol], false])
+    end
+  end
+
   describe 'HIDDEN_PATHS' do
     it 'hides adapters' do
       adapters = Dir[File.expand_path('../../lib/adapters/*.rb', __dir__)]

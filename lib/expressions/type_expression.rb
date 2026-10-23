@@ -28,6 +28,12 @@ module Low
       @deep_type_check = nil
     end
 
+    # Operators return a copy, so the copy needs its own types.
+    def initialize_copy(source)
+      super
+      @types = @types.dup
+    end
+
     def required?
       @default_value == :LOWTYPE_UNDEFINED
     end
