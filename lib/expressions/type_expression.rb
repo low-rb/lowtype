@@ -2,6 +2,7 @@
 
 require 'expressions'
 
+require_relative 'type_errors'
 require_relative 'value_expression'
 require_relative '../proxies/param_proxy'
 require_relative '../queries/type_query'
@@ -58,6 +59,11 @@ module Low
       raise proxy.error_type, proxy.error_message(value:)
     rescue proxy.error_type => e
       raise proxy.error_type, e.message, proxy.backtrace(backtrace: e.backtrace, hidden_paths: HIDDEN_PATHS)
+    end
+
+    # SchemaNode objects for every value that doesn't match (does not raise exception).
+    def errors(value)
+      TypeErrors.error_nodes(type: self, value:)
     end
 
     def valid_types

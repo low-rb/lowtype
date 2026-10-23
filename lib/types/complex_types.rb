@@ -3,6 +3,7 @@
 require_relative '../factories/type_factory'
 require_relative 'boolean'
 require_relative 'enum'
+require_relative 'schema'
 require_relative 'status'
 
 module Low
