@@ -30,6 +30,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'dirload'
   spec.add_dependency 'expressions', '~> 0.1'
-  spec.add_dependency 'lowkey', '~> 0.5'
+  spec.add_dependency 'lowkey', '>= 0.7.1'
   spec.add_dependency 'trees'
 end
