@@ -38,6 +38,10 @@ module Low
       @default_value == :LOWTYPE_UNDEFINED
     end
 
+    def optional?
+      !required?
+    end
+
     # TODO: Might need to accept error class here so that type accessors can be disabled and supply ArgumentError.
     def validate!(value:, proxy:) # rubocop:disable Metrics
       if value.nil?
