@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Bumps the minor version, like 1.6.1 to 1.7.0, or with --patch the patch version, like 1.6.1 to 1.6.2, and names the
+# changelog's Unreleased changes after it, then runs bundle update, so Gemfile.lock has it too, and commits the version,
+# the changelog and Gemfile.lock as "Release v1.7.0", leaving any other changes out of it.
+#   bin/bump
+#   bin/bump --patch
+
+Dir.chdir(File.expand_path('..', __dir__))
+path = 'lib/version.rb'
+source = File.read(path)
+version = source[/VERSION = '(\d+\.\d+\.\d+)'/, 1] or abort("There's no VERSION like '1.2.3' in #{path}")
+
+major, minor, patch = version.split('.').map(&:to_i)
+bumped = "#{major}.#{minor + 1}.0"
+bumped = "#{major}.#{minor}.#{patch + 1}" if ARGV.include?('--patch')
+File.write(path, source.sub("VERSION = '#{version}'", "VERSION = '#{bumped}'"))
+puts "Bumped #{version} to #{bumped}"
+
+changelog = File.read('CHANGELOG.md')
+released = changelog.sub(/^## Unreleased$/, "## #{bumped}")
+File.write('CHANGELOG.md', released)
+files = [path, 'Gemfile.lock']
+files << 'CHANGELOG.md' unless released == changelog
+
+system('bundle', 'update', '--all', exception: true)
+system('git', 'commit', '-m', "Release v#{bumped}", '--', *files, exception: true)
