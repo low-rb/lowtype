@@ -267,6 +267,7 @@ end
 
 - `Boolean` - Accepts only `true`/`false`
 - `Enum` - An allowed set of values. Usage: `Enum[:draft, :published] | :draft`
+- `Schema` - A hash with named keys. Usage: `Schema[name: String, age: Integer | nil]`
 - `Tuple` (subclass of `Array`)
 - `Status` (subclass of `Integer`)
 - `Headers` (subclass of `Hash`)
@@ -279,6 +280,56 @@ end
 Any class/type that's available to Ruby is available to LowType. 
 
 ℹ️ LowType evaluates parameter types in both the binding of LowType and the binding of the class that did the `include`.
+
+### Schemas
+
+`Schema[]` validates hashes and JSON:
+
+```ruby
+def create(user = Schema[name: String, email: String | nil, address: { city: String }])
+```
+
+**Keys:**
+- Keys with `nil` are omittable
+- Keys the schema doesn't name are allowed
+- Keys match symbols or strings
+
+## Checking data
+
+Find where data doesn't match by calling `errors` on a type expression or a `Schema`. It returns every mismatch instead of raising on the first one:
+
+```ruby
+user = Schema[id: Integer, tags: Array[String], address: { postcode: String | nil }]
+errors = (user | nil).errors({ 'id' => '1', 'tags' => ['a', 2], 'address' => { 'postcode' => 9 } })
+# => [#<data Low::TypeErrors::SchemaNode path="id", type=Integer, value="1">, ...]
+
+errors.map { |node| "#{node.path}: expected #{node.expected}, received #{node.received}" }
+# => [
+#   'id: expected Integer, received "1"',
+#   'tags[1]: expected String, received 2',
+#   'address.postcode: expected String | nil, received 9'
+# ]
+```
+
+Each `SchemaNode` has the `path`, `type` and `value` that didn't match. `expected` and `received` describe them for a message.
+
+### Parsing types from text
+
+`Low::TypeParser.parse` builds a type expression from text, like types written in a config or Markdown file:
+
+```ruby
+Low::TypeParser.parse("Array[Enum['admin', 'member']] | nil")
+Low::TypeParser.parse('Schema[id: Integer, address: { city: String }]')
+```
+
+Ruby parses the text and looks up its constants, but never runs it. Only constants, values, `|`, `{}` and `[]` on `Array`, `Hash`, `Schema`, `Enum` and `Status` are allowed, and anything else raises `Low::ParseError` with its position. Constants are looked up in `Low::Types` and then `Object` by default, or in a namespace you pass, so a namespace can hold your own schemas:
+
+```ruby
+types = Module.new { include Low::Types }
+types.const_set(:User, Schema[id: Integer, name: String])
+
+Low::TypeParser.parse('Array[User] | nil', namespace: types)
+```
 
 ## Integrations
 

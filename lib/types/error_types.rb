@@ -6,4 +6,5 @@ module Low
   class ReturnTypeError < TypeError; end
   class AllowedTypeError < TypeError; end
   class ConfigError < TypeError; end
+  class ParseError < ArgumentError; end
 end
