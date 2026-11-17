@@ -6,6 +6,7 @@
 # the changelog and Gemfile.lock as "Release v1.7.0", leaving any other changes out of it.
 #   bin/bump
 #   bin/bump --patch
+#   bin/bump -p
 
 Dir.chdir(File.expand_path('..', __dir__))
 path = 'lib/version.rb'
@@ -14,7 +15,7 @@ version = source[/VERSION = '(\d+\.\d+\.\d+)'/, 1] or abort("There's no VERSION 
 
 major, minor, patch = version.split('.').map(&:to_i)
 bumped = "#{major}.#{minor + 1}.0"
-bumped = "#{major}.#{minor}.#{patch + 1}" if ARGV.include?('--patch')
+bumped = "#{major}.#{minor}.#{patch + 1}" if ARGV.intersect?(%w[--patch -p])
 File.write(path, source.sub("VERSION = '#{version}'", "VERSION = '#{bumped}'"))
 puts "Bumped #{version} to #{bumped}"
 
